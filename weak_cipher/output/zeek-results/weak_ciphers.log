@@ -1,0 +1,16 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	weak_ciphers
+#open	2026-03-19-03-13-56
+#fields	ts	uid	orig_h	orig_p	resp_h	resp_p	server_name	version	cipher	risk_level	reason
+#types	time	string	addr	port	addr	port	string	string	string	string	string
+1773890011.375205	CQATjh3sItLtXu4kGf	172.18.0.4	49606	172.18.0.2	443	nginx-weak	TLSv12	TLS_RSA_WITH_AES_128_CBC_SHA	MEDIUM	Static RSA — no Perfect Forward Secrecy
+1773890011.386341	CCr5Oh31HrG1q4Lyri	172.18.0.4	49608	172.18.0.2	443	nginx-weak	TLSv12	TLS_RSA_WITH_AES_128_GCM_SHA256	MEDIUM	Static RSA — no Perfect Forward Secrecy
+1773890011.472684	CcjVq9YHBaPVtJ051	172.18.0.4	49634	172.18.0.2	443	nginx-weak	TLSv12	TLS_RSA_WITH_AES_128_CBC_SHA	MEDIUM	Static RSA — no Perfect Forward Secrecy
+1773890011.529845	CppZMG2RDhNXyXAVej	172.18.0.4	49650	172.18.0.2	443	nginx-weak	TLSv12	TLS_RSA_WITH_AES_128_CBC_SHA	MEDIUM	Static RSA — no Perfect Forward Secrecy
+1773890011.601420	Coebct34vR5QdVqXh7	172.18.0.4	49674	172.18.0.2	443	nginx-weak	TLSv12	TLS_RSA_WITH_AES_128_CBC_SHA	MEDIUM	Static RSA — no Perfect Forward Secrecy
+1773890011.686553	CBYHJH2MPXOGOhMAq8	172.18.0.4	49702	172.18.0.2	443	nginx-weak	TLSv12	TLS_RSA_WITH_AES_128_CBC_SHA	MEDIUM	Static RSA — no Perfect Forward Secrecy
+1773890011.714646	Cohy8C4UnXUpt0iEk7	172.18.0.4	49726	172.18.0.2	443	nginx-weak	TLSv12	TLS_RSA_WITH_AES_128_CBC_SHA	MEDIUM	Static RSA — no Perfect Forward Secrecy
+#close	2026-03-19-03-13-56

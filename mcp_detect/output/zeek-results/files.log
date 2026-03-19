@@ -1,0 +1,51 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	files
+#open	2026-03-19-04-40-17
+#fields	ts	fuid	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	source	depth	analyzers	mime_type	filename	duration	local_orig	is_orig	seen_bytes	total_bytes	missing_bytes	overflow_bytes	timedout	parent_fuid	md5	sha1	sha256	extracted	extracted_cutoff	extracted_size
+#types	time	string	string	addr	port	addr	port	string	count	set[string]	string	string	interval	bool	bool	count	count	count	count	bool	string	string	string	string	string	bool	count
+1773895119.931753	F5LGa74lf9lph45n28	CiYqAsEnR9sVfZoOb	172.19.0.3	35348	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	193	193	0	0	F	-	-	-	-	-	-	-
+1773895119.935370	FVyQPzhGBqEqyMw5k	CiYqAsEnR9sVfZoOb	172.19.0.3	35348	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	276	-	0	0	F	-	-	-	-	-	-	-
+1773895119.947837	FEzjqQ21T0UGgxbXKi	C2e3urnalUCjWl2Og	172.19.0.3	35362	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	54	54	0	0	F	-	-	-	-	-	-	-
+1773895119.955201	FMDmBT3Z7eJGJl8aOb	CqTp4g3UPzRZyaQNKl	172.19.0.3	35378	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	58	58	0	0	F	-	-	-	-	-	-	-
+1773895119.956338	F6gbFi1Alkl0xSjiJl	CqTp4g3UPzRZyaQNKl	172.19.0.3	35378	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	717	-	0	0	F	-	-	-	-	-	-	-
+1773895120.250654	F0Yy4N3fpWhkEcViJ1	CW8H6Y32N4bjB8NQ2	172.19.0.3	35386	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	111	111	0	0	F	-	-	-	-	-	-	-
+1773895120.251023	FNkY38467xQT8P06K3	CW8H6Y32N4bjB8NQ2	172.19.0.3	35386	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	134	-	0	0	F	-	-	-	-	-	-	-
+1773895120.254416	F5yvyW1EZemAA5Hp1l	CoLvOLGBBUZ5ORKlj	172.19.0.3	35388	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	118	118	0	0	F	-	-	-	-	-	-	-
+1773895120.254615	FWfCmC4VGRn8aNp1t2	CoLvOLGBBUZ5ORKlj	172.19.0.3	35388	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	134	-	0	0	F	-	-	-	-	-	-	-
+1773895120.260272	FgxwfY3LCmW9n1ZIDc	Cu6ATY2MsuO31bwit8	172.19.0.3	35396	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	150	150	0	0	F	-	-	-	-	-	-	-
+1773895120.260546	FYmpzw22kYjML7eZGg	Cu6ATY2MsuO31bwit8	172.19.0.3	35396	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	135	-	0	0	F	-	-	-	-	-	-	-
+1773895120.264012	F6WiRa3GUAygrVJAo2	CVmD8r2id6OpeWRhVd	172.19.0.3	35406	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	62	62	0	0	F	-	-	-	-	-	-	-
+1773895120.264274	FFewAh2pfqiJHnVEQd	CVmD8r2id6OpeWRhVd	172.19.0.3	35406	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	240	-	0	0	F	-	-	-	-	-	-	-
+1773895120.268952	FWwUvm3VSwLktKbhu	CM1bFm4uXrEEyTb138	172.19.0.3	35412	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	93	93	0	0	F	-	-	-	-	-	-	-
+1773895120.269320	Fd44eE2Qu08Ldvapj5	CM1bFm4uXrEEyTb138	172.19.0.3	35412	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	175	-	0	0	F	-	-	-	-	-	-	-
+1773895120.273901	FtXVwY3dx3RJMldLSf	CzEuZQ3ffrMNsPcyAl	172.19.0.3	35424	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	60	60	0	0	F	-	-	-	-	-	-	-
+1773895120.274178	FwXKEz2GDlWTurISU5	CzEuZQ3ffrMNsPcyAl	172.19.0.3	35424	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	207	-	0	0	F	-	-	-	-	-	-	-
+1773895120.278028	FE7SiO31DNmNeodbdc	Chp3Xr1cTVgPXe8wIg	172.19.0.3	35432	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	112	112	0	0	F	-	-	-	-	-	-	-
+1773895120.278298	FbGom02Rjw2ukSIZqh	Chp3Xr1cTVgPXe8wIg	172.19.0.3	35432	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	169	-	0	0	F	-	-	-	-	-	-	-
+1773895120.287184	Fasmg84wuxgCbd7Gpk	CYNTat3kpdos68utL4	172.19.0.3	35444	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	41	41	0	0	F	-	-	-	-	-	-	-
+1773895120.287479	FzEFg24k92nNyJSNYb	CYNTat3kpdos68utL4	172.19.0.3	35444	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	44	-	0	0	F	-	-	-	-	-	-	-
+1773895120.291564	Fik0Xi2QNUR6Mhs5O	C0mY0N23nxpB7d6dVl	172.19.0.3	35452	172.19.0.2	3000	HTTP	0	(empty)	text/plain	-	2.002011	T	F	119	-	0	0	F	-	-	-	-	-	-	-
+1773895125.322832	F6SAlA1HCmaS78DOo4	CnqRCz3ppjIdftUo47	172.19.0.3	59244	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	163	163	0	0	F	-	-	-	-	-	-	-
+1773895125.329418	FEE91s1sf6wExDwjk	CnqRCz3ppjIdftUo47	172.19.0.3	59244	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	277	-	0	0	F	-	-	-	-	-	-	-
+1773895125.336991	FvFlAE4lJGz9qJFxo6	C5C0uF4nFUri968aMk	172.19.0.3	59258	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	122	122	0	0	F	-	-	-	-	-	-	-
+1773895125.337666	F97TUv2IBAh4JNsp6a	C5C0uF4nFUri968aMk	172.19.0.3	59258	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	136	-	0	0	F	-	-	-	-	-	-	-
+1773895125.341551	FbKUAU2jHe3iUnl07c	CZYIAR2SDo6tV48NBi	172.19.0.3	59262	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	122	122	0	0	F	-	-	-	-	-	-	-
+1773895125.341751	F8rBBP1PwuFJ8nqW97	CZYIAR2SDo6tV48NBi	172.19.0.3	59262	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	136	-	0	0	F	-	-	-	-	-	-	-
+1773895125.344175	FsEgeQ3YWfISXgmby9	CLOhWjXjYUmsc0EDi	172.19.0.3	59264	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	122	122	0	0	F	-	-	-	-	-	-	-
+1773895125.344357	FeywU1hCdNTU1zJTi	CLOhWjXjYUmsc0EDi	172.19.0.3	59264	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	136	-	0	0	F	-	-	-	-	-	-	-
+1773895125.356163	FtCbGD6fySpQBwMBi	CT1Iwp4OOdT5ggbZS4	172.19.0.3	59270	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	122	122	0	0	F	-	-	-	-	-	-	-
+1773895125.356578	Fra0ta1Ad7Dqei4GDl	CT1Iwp4OOdT5ggbZS4	172.19.0.3	59270	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	136	-	0	0	F	-	-	-	-	-	-	-
+1773895125.360204	FzTi0j44PBe0ZeBWxh	CdVSzf3aMOgmtr5M4h	172.19.0.3	59286	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	122	122	0	0	F	-	-	-	-	-	-	-
+1773895125.360497	FALlwZ3e1OLufrS9c4	CdVSzf3aMOgmtr5M4h	172.19.0.3	59286	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	136	-	0	0	F	-	-	-	-	-	-	-
+1773895125.364546	Fn0csH2uhtoAKJO3sl	CHFFPoTKUXASSA2kl	172.19.0.3	59290	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	122	122	0	0	F	-	-	-	-	-	-	-
+1773895125.364739	FTGEft2icg7fCMwUSd	CHFFPoTKUXASSA2kl	172.19.0.3	59290	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	136	-	0	0	F	-	-	-	-	-	-	-
+1773895125.375061	Fzz6jy3UjpCDxy4Cxa	Cw9X7S1R6OpSrebqqa	172.19.0.3	59296	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	122	122	0	0	F	-	-	-	-	-	-	-
+1773895125.377117	FcWRXO2W36NjHp4KM8	Cw9X7S1R6OpSrebqqa	172.19.0.3	59296	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	136	-	0	0	F	-	-	-	-	-	-	-
+1773895125.390149	FQlgsa30za8HsSN0T3	CATAKz29EXKiFQz06j	172.19.0.3	59298	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	122	122	0	0	F	-	-	-	-	-	-	-
+1773895125.391567	FXcGTn3owJ2wZZbgw8	CATAKz29EXKiFQz06j	172.19.0.3	59298	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	136	-	0	0	F	-	-	-	-	-	-	-
+1773895125.420310	FJlaDj2Cs5zKoXL269	CxyXgU3UIPqkWgoQXj	172.19.0.3	59316	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	T	163	163	0	0	F	-	-	-	-	-	-	-
+1773895125.420739	F5Jw3k3sIdS9bv1Np8	CxyXgU3UIPqkWgoQXj	172.19.0.3	59316	172.19.0.2	3000	HTTP	0	(empty)	text/json	-	0.000000	T	F	277	-	0	0	F	-	-	-	-	-	-	-
+#close	2026-03-19-04-40-17

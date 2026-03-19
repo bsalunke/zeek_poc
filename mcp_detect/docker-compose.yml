@@ -1,0 +1,274 @@
+services:
+  # Test MCP server (intentionally HTTP for pcap inspection)
+  mcp-server:
+    build: ./mcp-server
+    container_name: mcp-test-server
+    ports:
+      - "3000:3000"
+    networks:
+      - mcp-test-net
+
+  # Traffic generator + packet capture
+  tester:
+    image: nicolaka/netshoot
+    container_name: mcp-tester
+    networks:
+      - mcp-test-net
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    volumes:
+      - ./output:/data
+    depends_on:
+      - mcp-server
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "[*] Waiting for MCP server..."
+        sleep 3
+
+        # Verify server is up
+        until curl -sf http://mcp-server:3000/health > /dev/null 2>&1; do
+          echo "    waiting..."
+          sleep 1
+        done
+        echo "[+] MCP server is up"
+
+        echo "[*] Starting packet capture..."
+        tcpdump -i any -w /data/mcp-traffic.pcap "port 3000" &
+        TCPDUMP_PID=$$!
+        sleep 2
+
+        echo ""
+        echo "=========================================="
+        echo "  MCP Protocol Detection Test Suite"
+        echo "=========================================="
+        echo ""
+
+        # -----------------------------------------------
+        # Test 1: Streamable HTTP — Initialize handshake
+        # -----------------------------------------------
+        echo "=== Test 1: MCP Initialize (Streamable HTTP) ==="
+        INIT_RESP=$$(curl -s -D - \
+          -X POST http://mcp-server:3000/mcp \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json, text/event-stream" \
+          -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{"roots":{"listChanged":true}},"clientInfo":{"name":"zeek-test-client","version":"1.0.0"}}}')
+        echo "$$INIT_RESP" | head -20
+        echo ""
+
+        # Extract session ID from response headers
+        SESSION_ID=$$(echo "$$INIT_RESP" | grep -i "Mcp-Session-Id" | head -1 | awk '{print $$2}' | tr -d '\r')
+        echo "[+] Session ID: $$SESSION_ID"
+        echo ""
+
+        # -----------------------------------------------
+        # Test 2: Send initialized notification
+        # -----------------------------------------------
+        echo "=== Test 2: notifications/initialized ==="
+        curl -s -o /dev/null -w "HTTP %{http_code}\n" \
+          -X POST http://mcp-server:3000/mcp \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json, text/event-stream" \
+          -H "Mcp-Session-Id: $$SESSION_ID" \
+          -H "MCP-Protocol-Version: 2025-06-18" \
+          -d '{"jsonrpc":"2.0","method":"notifications/initialized"}'
+        echo ""
+
+        # -----------------------------------------------
+        # Test 3: tools/list
+        # -----------------------------------------------
+        echo "=== Test 3: tools/list ==="
+        curl -s \
+          -X POST http://mcp-server:3000/mcp \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json, text/event-stream" \
+          -H "Mcp-Session-Id: $$SESSION_ID" \
+          -H "MCP-Protocol-Version: 2025-06-18" \
+          -d '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}' | python3 -m json.tool 2>/dev/null || echo "(raw output above)"
+        echo ""
+
+        # -----------------------------------------------
+        # Test 4: tools/call — read_file
+        # -----------------------------------------------
+        echo "=== Test 4: tools/call (read_file) ==="
+        curl -s \
+          -X POST http://mcp-server:3000/mcp \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json, text/event-stream" \
+          -H "Mcp-Session-Id: $$SESSION_ID" \
+          -H "MCP-Protocol-Version: 2025-06-18" \
+          -d '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"read_file","arguments":{"path":"/etc/passwd"}}}'
+        echo ""
+        echo ""
+
+        # -----------------------------------------------
+        # Test 5: tools/call — run_query
+        # -----------------------------------------------
+        echo "=== Test 5: tools/call (run_query) ==="
+        curl -s \
+          -X POST http://mcp-server:3000/mcp \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json, text/event-stream" \
+          -H "Mcp-Session-Id: $$SESSION_ID" \
+          -H "MCP-Protocol-Version: 2025-06-18" \
+          -d '{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"run_query","arguments":{"sql":"SELECT * FROM users"}}}'
+        echo ""
+        echo ""
+
+        # -----------------------------------------------
+        # Test 6: tools/call — send_email
+        # -----------------------------------------------
+        echo "=== Test 6: tools/call (send_email) ==="
+        curl -s \
+          -X POST http://mcp-server:3000/mcp \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json, text/event-stream" \
+          -H "Mcp-Session-Id: $$SESSION_ID" \
+          -H "MCP-Protocol-Version: 2025-06-18" \
+          -d '{"jsonrpc":"2.0","id":5,"method":"tools/call","params":{"name":"send_email","arguments":{"to":"admin@corp.com","subject":"test","body":"exfil data"}}}'
+        echo ""
+        echo ""
+
+        # -----------------------------------------------
+        # Test 7: resources/list
+        # -----------------------------------------------
+        echo "=== Test 7: resources/list ==="
+        curl -s \
+          -X POST http://mcp-server:3000/mcp \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json, text/event-stream" \
+          -H "Mcp-Session-Id: $$SESSION_ID" \
+          -H "MCP-Protocol-Version: 2025-06-18" \
+          -d '{"jsonrpc":"2.0","id":6,"method":"resources/list","params":{}}'
+        echo ""
+        echo ""
+
+        # -----------------------------------------------
+        # Test 8: resources/read
+        # -----------------------------------------------
+        echo "=== Test 8: resources/read ==="
+        curl -s \
+          -X POST http://mcp-server:3000/mcp \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json, text/event-stream" \
+          -H "Mcp-Session-Id: $$SESSION_ID" \
+          -H "MCP-Protocol-Version: 2025-06-18" \
+          -d '{"jsonrpc":"2.0","id":7,"method":"resources/read","params":{"uri":"file:///etc/config.json"}}'
+        echo ""
+        echo ""
+
+        # -----------------------------------------------
+        # Test 9: prompts/list
+        # -----------------------------------------------
+        echo "=== Test 9: prompts/list ==="
+        curl -s \
+          -X POST http://mcp-server:3000/mcp \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json, text/event-stream" \
+          -H "Mcp-Session-Id: $$SESSION_ID" \
+          -H "MCP-Protocol-Version: 2025-06-18" \
+          -d '{"jsonrpc":"2.0","id":8,"method":"prompts/list","params":{}}'
+        echo ""
+        echo ""
+
+        # -----------------------------------------------
+        # Test 10: prompts/get
+        # -----------------------------------------------
+        echo "=== Test 10: prompts/get ==="
+        curl -s \
+          -X POST http://mcp-server:3000/mcp \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json, text/event-stream" \
+          -H "Mcp-Session-Id: $$SESSION_ID" \
+          -H "MCP-Protocol-Version: 2025-06-18" \
+          -d '{"jsonrpc":"2.0","id":9,"method":"prompts/get","params":{"name":"summarize","arguments":{"text":"Hello world"}}}'
+        echo ""
+        echo ""
+
+        # -----------------------------------------------
+        # Test 11: ping
+        # -----------------------------------------------
+        echo "=== Test 11: ping ==="
+        curl -s \
+          -X POST http://mcp-server:3000/mcp \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json, text/event-stream" \
+          -H "Mcp-Session-Id: $$SESSION_ID" \
+          -H "MCP-Protocol-Version: 2025-06-18" \
+          -d '{"jsonrpc":"2.0","id":10,"method":"ping"}'
+        echo ""
+        echo ""
+
+        # -----------------------------------------------
+        # Test 12: Legacy SSE transport — GET /sse
+        # -----------------------------------------------
+        echo "=== Test 12: Legacy SSE (GET /sse) ==="
+        timeout 5 curl -s -N http://mcp-server:3000/sse 2>/dev/null || true
+        echo ""
+        echo ""
+
+        # -----------------------------------------------
+        # Test 13: Legacy POST /messages
+        # -----------------------------------------------
+        echo "=== Test 13: Legacy POST /messages ==="
+        curl -s \
+          -X POST "http://mcp-server:3000/messages?session_id=legacy-test" \
+          -H "Content-Type: application/json" \
+          -d '{"jsonrpc":"2.0","id":11,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"legacy-client","version":"0.1.0"}}}'
+        echo ""
+        echo ""
+
+        # -----------------------------------------------
+        # Test 14: Rapid tool calls (volume test)
+        # -----------------------------------------------
+        echo "=== Test 14: Rapid tool calls (volume) ==="
+        for i in $$(seq 1 8); do
+          curl -s -o /dev/null \
+            -X POST http://mcp-server:3000/mcp \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json, text/event-stream" \
+            -H "Mcp-Session-Id: $$SESSION_ID" \
+            -H "MCP-Protocol-Version: 2025-06-18" \
+            -d "{\"jsonrpc\":\"2.0\",\"id\":$$((100+i)),\"method\":\"tools/call\",\"params\":{\"name\":\"run_query\",\"arguments\":{\"sql\":\"SELECT * FROM table_$$i\"}}}"
+        done
+        echo "[+] Sent 8 rapid tool calls"
+        echo ""
+
+        # -----------------------------------------------
+        # Test 15: Session termination (DELETE)
+        # -----------------------------------------------
+        echo "=== Test 15: Session DELETE ==="
+        curl -s -o /dev/null -w "HTTP %{http_code}\n" \
+          -X DELETE http://mcp-server:3000/mcp \
+          -H "Mcp-Session-Id: $$SESSION_ID"
+        echo ""
+
+        # -----------------------------------------------
+        # Test 16: No-auth initialize (separate session)
+        # -----------------------------------------------
+        echo "=== Test 16: Initialize WITHOUT Authorization header ==="
+        curl -s \
+          -X POST http://mcp-server:3000/mcp \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/json, text/event-stream" \
+          -d '{"jsonrpc":"2.0","id":20,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"unauth-client","version":"1.0.0"}}}'
+        echo ""
+        echo ""
+
+        echo "=========================================="
+        echo "  Tests Complete"
+        echo "=========================================="
+
+        echo "[*] Stopping capture..."
+        sleep 2
+        kill $$TCPDUMP_PID 2>/dev/null || true
+        wait $$TCPDUMP_PID 2>/dev/null || true
+        sleep 1
+
+        echo "[+] PCAP saved to /data/mcp-traffic.pcap"
+        ls -lh /data/mcp-traffic.pcap
+
+networks:
+  mcp-test-net:
+    driver: bridge

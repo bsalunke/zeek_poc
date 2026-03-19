@@ -1,0 +1,10 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	x509
+#open	2026-03-19-03-13-56
+#fields	ts	fingerprint	certificate.version	certificate.serial	certificate.subject	certificate.issuer	certificate.not_valid_before	certificate.not_valid_after	certificate.key_alg	certificate.sig_alg	certificate.key_type	certificate.key_length	certificate.exponent	certificate.curve	san.dns	san.uri	san.email	san.ip	basic_constraints.ca	basic_constraints.path_len	host_cert	client_cert
+#types	time	string	count	string	string	string	time	time	string	string	string	count	string	string	vector[string]	vector[string]	vector[string]	vector[addr]	bool	count	bool	bool
+1773890011.298144	edef3838cdbf9108bbf7e41b011641a049ef7c6745adea8fca71dc79e7593c72	3	FF9C3B1ABD3531B1	CN=cipher-test.local,O=ZeekCipherLab,L=Lab,ST=Test,C=US	CN=cipher-test.local,O=ZeekCipherLab,L=Lab,ST=Test,C=US	1773889801.000000	1805425801.000000	rsaEncryption	sha256WithRSAEncryption	rsa	2048	65537	-	cipher-test.local,weak-cipher-server,strong-cipher-server,localhost	-	-	127.0.0.1	-	-	T	F
+#close	2026-03-19-03-13-56

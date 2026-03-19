@@ -1,0 +1,11 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	http
+#open	2026-03-19-03-13-56
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	trans_depth	method	host	uri	referrer	version	user_agent	origin	request_body_len	response_body_len	status_code	status_msg	info_code	info_msg	tags	username	password	proxied	orig_fuids	orig_filenames	orig_mime_types	resp_fuids	resp_filenames	resp_mime_types
+#types	time	string	addr	port	addr	port	count	string	string	string	string	string	string	string	count	count	count	string	count	string	set[enum]	string	string	set[string]	vector[string]	vector[string]	vector[string]	vector[string]	vector[string]	vector[string]
+1773890011.344059	C1WfIT3dJWkxgL2Hfd	172.18.0.4	49580	172.18.0.2	443	1	-	-	-	-	1.1	-	-	0	157	400	Bad Request	-	-	(empty)	-	-	-	-	-	-	FwL8lgoANAYh5IM83	-	text/html
+1773890011.355757	CrQlnhGnrH9rqOPNj	172.18.0.4	49584	172.18.0.2	443	1	-	-	-	-	1.1	-	-	0	157	400	Bad Request	-	-	(empty)	-	-	-	-	-	-	FNIr7q3pHL8rAao0Nl	-	text/html
+#close	2026-03-19-03-13-56

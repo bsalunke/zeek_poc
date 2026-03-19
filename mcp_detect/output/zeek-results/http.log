@@ -1,0 +1,32 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	http
+#open	2026-03-19-04-40-17
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	trans_depth	method	host	uri	referrer	version	user_agent	origin	request_body_len	response_body_len	status_code	status_msg	info_code	info_msg	tags	username	password	proxied	orig_fuids	orig_filenames	orig_mime_types	resp_fuids	resp_filenames	resp_mime_types
+#types	time	string	addr	port	addr	port	count	string	string	string	string	string	string	string	count	count	count	string	count	string	set[enum]	string	string	set[string]	vector[string]	vector[string]	vector[string]	vector[string]	vector[string]	vector[string]
+1773895119.931753	CiYqAsEnR9sVfZoOb	172.19.0.3	35348	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	193	276	200	OK	-	-	(empty)	-	-	-	F5LGa74lf9lph45n28	-	text/json	FVyQPzhGBqEqyMw5k	-	text/json
+1773895119.947837	C2e3urnalUCjWl2Og	172.19.0.3	35362	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	54	0	202	Accepted	-	-	(empty)	-	-	-	FEzjqQ21T0UGgxbXKi	-	text/json	-	-	-
+1773895119.955201	CqTp4g3UPzRZyaQNKl	172.19.0.3	35378	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	58	717	200	OK	-	-	(empty)	-	-	-	FMDmBT3Z7eJGJl8aOb	-	text/json	F6gbFi1Alkl0xSjiJl	-	text/json
+1773895120.250654	CW8H6Y32N4bjB8NQ2	172.19.0.3	35386	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	111	134	200	OK	-	-	(empty)	-	-	-	F0Yy4N3fpWhkEcViJ1	-	text/json	FNkY38467xQT8P06K3	-	text/json
+1773895120.254416	CoLvOLGBBUZ5ORKlj	172.19.0.3	35388	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	118	134	200	OK	-	-	(empty)	-	-	-	F5yvyW1EZemAA5Hp1l	-	text/json	FWfCmC4VGRn8aNp1t2	-	text/json
+1773895120.260272	Cu6ATY2MsuO31bwit8	172.19.0.3	35396	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	150	135	200	OK	-	-	(empty)	-	-	-	FgxwfY3LCmW9n1ZIDc	-	text/json	FYmpzw22kYjML7eZGg	-	text/json
+1773895120.264012	CVmD8r2id6OpeWRhVd	172.19.0.3	35406	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	62	240	200	OK	-	-	(empty)	-	-	-	F6WiRa3GUAygrVJAo2	-	text/json	FFewAh2pfqiJHnVEQd	-	text/json
+1773895120.268952	CM1bFm4uXrEEyTb138	172.19.0.3	35412	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	93	175	200	OK	-	-	(empty)	-	-	-	FWwUvm3VSwLktKbhu	-	text/json	Fd44eE2Qu08Ldvapj5	-	text/json
+1773895120.273901	CzEuZQ3ffrMNsPcyAl	172.19.0.3	35424	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	60	207	200	OK	-	-	(empty)	-	-	-	FtXVwY3dx3RJMldLSf	-	text/json	FwXKEz2GDlWTurISU5	-	text/json
+1773895120.278028	Chp3Xr1cTVgPXe8wIg	172.19.0.3	35432	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	112	169	200	OK	-	-	(empty)	-	-	-	FE7SiO31DNmNeodbdc	-	text/json	FbGom02Rjw2ukSIZqh	-	text/json
+1773895120.287184	CYNTat3kpdos68utL4	172.19.0.3	35444	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	41	44	200	OK	-	-	(empty)	-	-	-	Fasmg84wuxgCbd7Gpk	-	text/json	FzEFg24k92nNyJSNYb	-	text/json
+1773895120.291334	C0mY0N23nxpB7d6dVl	172.19.0.3	35452	172.19.0.2	3000	1	GET	mcp-server:3000	/sse	-	1.0	curl/8.18.0	-	0	119	200	OK	-	-	(empty)	-	-	-	-	-	-	Fik0Xi2QNUR6Mhs5O	-	text/plain
+1773895125.322832	CnqRCz3ppjIdftUo47	172.19.0.3	59244	172.19.0.2	3000	1	POST	mcp-server:3000	/messages?session_id=legacy-test	-	1.0	curl/8.18.0	-	163	277	200	OK	-	-	(empty)	-	-	-	F6SAlA1HCmaS78DOo4	-	text/json	FEE91s1sf6wExDwjk	-	text/json
+1773895125.336991	C5C0uF4nFUri968aMk	172.19.0.3	59258	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	122	136	200	OK	-	-	(empty)	-	-	-	FvFlAE4lJGz9qJFxo6	-	text/json	F97TUv2IBAh4JNsp6a	-	text/json
+1773895125.341551	CZYIAR2SDo6tV48NBi	172.19.0.3	59262	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	122	136	200	OK	-	-	(empty)	-	-	-	FbKUAU2jHe3iUnl07c	-	text/json	F8rBBP1PwuFJ8nqW97	-	text/json
+1773895125.344175	CLOhWjXjYUmsc0EDi	172.19.0.3	59264	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	122	136	200	OK	-	-	(empty)	-	-	-	FsEgeQ3YWfISXgmby9	-	text/json	FeywU1hCdNTU1zJTi	-	text/json
+1773895125.356163	CT1Iwp4OOdT5ggbZS4	172.19.0.3	59270	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	122	136	200	OK	-	-	(empty)	-	-	-	FtCbGD6fySpQBwMBi	-	text/json	Fra0ta1Ad7Dqei4GDl	-	text/json
+1773895125.360204	CdVSzf3aMOgmtr5M4h	172.19.0.3	59286	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	122	136	200	OK	-	-	(empty)	-	-	-	FzTi0j44PBe0ZeBWxh	-	text/json	FALlwZ3e1OLufrS9c4	-	text/json
+1773895125.364546	CHFFPoTKUXASSA2kl	172.19.0.3	59290	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	122	136	200	OK	-	-	(empty)	-	-	-	Fn0csH2uhtoAKJO3sl	-	text/json	FTGEft2icg7fCMwUSd	-	text/json
+1773895125.375061	Cw9X7S1R6OpSrebqqa	172.19.0.3	59296	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	122	136	200	OK	-	-	(empty)	-	-	-	Fzz6jy3UjpCDxy4Cxa	-	text/json	FcWRXO2W36NjHp4KM8	-	text/json
+1773895125.390149	CATAKz29EXKiFQz06j	172.19.0.3	59298	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	122	136	200	OK	-	-	(empty)	-	-	-	FQlgsa30za8HsSN0T3	-	text/json	FXcGTn3owJ2wZZbgw8	-	text/json
+1773895125.407512	CH86lF10VWMmZQ84Z2	172.19.0.3	59300	172.19.0.2	3000	1	DELETE	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	0	0	200	OK	-	-	(empty)	-	-	-	-	-	-	-	-	-
+1773895125.420310	CxyXgU3UIPqkWgoQXj	172.19.0.3	59316	172.19.0.2	3000	1	POST	mcp-server:3000	/mcp	-	1.0	curl/8.18.0	-	163	277	200	OK	-	-	(empty)	-	-	-	FJlaDj2Cs5zKoXL269	-	text/json	F5Jw3k3sIdS9bv1Np8	-	text/json
+#close	2026-03-19-04-40-17

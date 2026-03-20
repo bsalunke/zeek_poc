@@ -4,7 +4,7 @@
 #
 # 1. Builds and starts MCP server + tester containers
 # 2. Tester generates MCP protocol traffic and captures pcap
-# 3. Runs Zeek on the pcap with the MCP detection script
+# 3. Runs Zeek (via Docker) on the pcap with the MCP detection script
 # 4. Displays results
 #
 set -euo pipefail
@@ -15,6 +15,8 @@ OUTPUT_DIR="$LAB_DIR/output"
 ZEEK_DIR="$LAB_DIR/zeek"
 ZEEK_RESULTS="$OUTPUT_DIR/zeek-results"
 
+ZEEK_IMAGE="zeek/zeek:latest"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -22,18 +24,32 @@ YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
+# Helper: run zeek-cut via Docker
+zeek_cut() {
+    docker run --rm -i "$ZEEK_IMAGE" zeek-cut "$@"
+}
+
 echo -e "${CYAN}╔══════════════════════════════════════════════╗${NC}"
 echo -e "${CYAN}║   MCP Server Detection Lab — Zeek POC        ║${NC}"
 echo -e "${CYAN}╚══════════════════════════════════════════════╝${NC}"
 echo ""
 
-# Check prerequisites
-for cmd in docker zeek; do
-    if ! command -v "$cmd" &>/dev/null; then
-        echo -e "${RED}[!] Required tool not found: $cmd${NC}"
-        exit 1
-    fi
-done
+# Check prerequisites — only Docker required
+if ! command -v docker &>/dev/null; then
+    echo -e "${RED}[!] Required tool not found: docker${NC}"
+    exit 1
+fi
+
+# Ensure Zeek Docker image is available
+echo -e "${YELLOW}[0/4]${NC} Pulling Zeek Docker image..."
+docker pull "$ZEEK_IMAGE" --quiet >/dev/null 2>&1 || {
+    echo -e "${RED}[!] Failed to pull $ZEEK_IMAGE${NC}"
+    exit 1
+}
+echo -e "  ${GREEN}[+]${NC} Zeek image ready: $ZEEK_IMAGE"
+ZEEK_VER=$(docker run --rm "$ZEEK_IMAGE" zeek --version 2>/dev/null || echo "unknown")
+echo -e "  ${GREEN}[+]${NC} $ZEEK_VER"
+echo ""
 
 # Clean previous output
 mkdir -p "$OUTPUT_DIR"
@@ -65,13 +81,18 @@ PCAP_SIZE=$(ls -lh "$OUTPUT_DIR/mcp-traffic.pcap" | awk '{print $5}')
 echo -e "  ${GREEN}[+]${NC} PCAP captured: $PCAP_SIZE"
 echo ""
 
-# Step 3: Run Zeek analysis
-echo -e "${YELLOW}[3/4]${NC} Running Zeek analysis..."
+# Step 3: Run Zeek analysis via Docker
+echo -e "${YELLOW}[3/4]${NC} Running Zeek analysis (via Docker)..."
 mkdir -p "$ZEEK_RESULTS"
-cd "$ZEEK_RESULTS"
-zeek -r "$OUTPUT_DIR/mcp-traffic.pcap" "$ZEEK_DIR/detect-mcp-servers.zeek" 2>&1 || {
+
+docker run --rm \
+    -v "$OUTPUT_DIR:/data" \
+    -v "$ZEEK_DIR:/scripts:ro" \
+    -v "$ZEEK_RESULTS:/results" \
+    -w /results \
+    "$ZEEK_IMAGE" \
+    zeek -C -r /data/mcp-traffic.pcap /scripts/detect-mcp-servers.zeek 2>&1 || {
     echo -e "${RED}[!] Zeek analysis failed${NC}"
-    # Show any error output
     ls -la "$ZEEK_RESULTS/" 2>/dev/null
     exit 1
 }
@@ -90,11 +111,11 @@ echo -e "${CYAN}═════════════════════�
 if [ -f "$ZEEK_RESULTS/http.log" ]; then
     echo ""
     echo "  Method/URI distribution:"
-    zeek-cut method uri < "$ZEEK_RESULTS/http.log" 2>/dev/null | sort | uniq -c | sort -rn | while read -r count method uri; do
+    zeek_cut method uri < "$ZEEK_RESULTS/http.log" | sort | uniq -c | sort -rn | while read -r count method uri; do
         printf "    %3d × %-6s %s\n" "$count" "$method" "$uri"
     done
     echo ""
-    echo "  Total HTTP transactions: $(zeek-cut ts < "$ZEEK_RESULTS/http.log" 2>/dev/null | wc -l | tr -d ' ')"
+    echo "  Total HTTP transactions: $(zeek_cut ts < "$ZEEK_RESULTS/http.log" | wc -l | tr -d ' ')"
 fi
 echo ""
 
@@ -103,12 +124,12 @@ echo -e "${CYAN}  MCP Detections (mcp_detect.log)${NC}"
 echo -e "${CYAN}═══════════════════════════════════════════════${NC}"
 if [ -f "$ZEEK_RESULTS/mcp_detect.log" ]; then
     echo ""
-    TOTAL=$(zeek-cut ts < "$ZEEK_RESULTS/mcp_detect.log" 2>/dev/null | wc -l | tr -d ' ')
+    TOTAL=$(zeek_cut ts < "$ZEEK_RESULTS/mcp_detect.log" | wc -l | tr -d ' ')
     echo -e "  ${GREEN}Total MCP detections: $TOTAL${NC}"
     echo ""
 
     echo "  By detection tier:"
-    zeek-cut detection_tier < "$ZEEK_RESULTS/mcp_detect.log" 2>/dev/null | sort | uniq -c | sort -rn | while read -r count tier; do
+    zeek_cut detection_tier < "$ZEEK_RESULTS/mcp_detect.log" | sort | uniq -c | sort -rn | while read -r count tier; do
         color="$NC"
         [[ "$tier" == "HIGH" ]] && color="$RED"
         [[ "$tier" == "MEDIUM" ]] && color="$YELLOW"
@@ -117,20 +138,20 @@ if [ -f "$ZEEK_RESULTS/mcp_detect.log" ]; then
     echo ""
 
     echo "  By JSON-RPC method:"
-    zeek-cut jsonrpc_method < "$ZEEK_RESULTS/mcp_detect.log" 2>/dev/null | sort | uniq -c | sort -rn | while read -r count method; do
+    zeek_cut jsonrpc_method < "$ZEEK_RESULTS/mcp_detect.log" | sort | uniq -c | sort -rn | while read -r count method; do
         [[ -z "$method" || "$method" == "-" ]] && method="(header-only)"
         printf "    %3d × %s\n" "$count" "$method"
     done
     echo ""
 
     echo "  By reason:"
-    zeek-cut reason < "$ZEEK_RESULTS/mcp_detect.log" 2>/dev/null | sort | uniq -c | sort -rn | while read -r count reason; do
+    zeek_cut reason < "$ZEEK_RESULTS/mcp_detect.log" | sort | uniq -c | sort -rn | while read -r count reason; do
         printf "    %3d × %s\n" "$count" "$reason"
     done
     echo ""
 
     echo "  Auth status of detected sessions:"
-    zeek-cut has_auth < "$ZEEK_RESULTS/mcp_detect.log" 2>/dev/null | sort | uniq -c | while read -r count val; do
+    zeek_cut has_auth < "$ZEEK_RESULTS/mcp_detect.log" | sort | uniq -c | while read -r count val; do
         label="No Auth"
         [[ "$val" == "T" ]] && label="Has Auth"
         color="$RED"
@@ -140,12 +161,18 @@ if [ -f "$ZEEK_RESULTS/mcp_detect.log" ]; then
     echo ""
 
     echo "  TLS status:"
-    zeek-cut has_tls < "$ZEEK_RESULTS/mcp_detect.log" 2>/dev/null | sort | uniq -c | while read -r count val; do
+    zeek_cut has_tls < "$ZEEK_RESULTS/mcp_detect.log" | sort | uniq -c | while read -r count val; do
         label="Plaintext HTTP"
         [[ "$val" == "T" ]] && label="TLS"
         color="$RED"
         [[ "$val" == "T" ]] && color="$GREEN"
         printf "    %3d × ${color}%s${NC}\n" "$count" "$label"
+    done
+
+    echo ""
+    echo "  Unique MCP sessions detected:"
+    zeek_cut mcp_session_id < "$ZEEK_RESULTS/mcp_detect.log" | sort -u | grep -v '^-$' | grep -v '^$' | while read -r sid; do
+        echo "    $sid"
     done
 else
     echo -e "  ${YELLOW}No mcp_detect.log generated${NC}"
@@ -157,18 +184,28 @@ echo -e "${CYAN}  Notice Log (notice.log)${NC}"
 echo -e "${CYAN}═══════════════════════════════════════════════${NC}"
 if [ -f "$ZEEK_RESULTS/notice.log" ]; then
     echo ""
-    zeek-cut note msg < "$ZEEK_RESULTS/notice.log" 2>/dev/null | while IFS=$'\t' read -r note msg; do
+    NOTICE_COUNT=$(zeek_cut note < "$ZEEK_RESULTS/notice.log" | wc -l | tr -d ' ')
+    echo -e "  Total notices: $NOTICE_COUNT"
+    echo ""
+    echo "  By type:"
+    zeek_cut note < "$ZEEK_RESULTS/notice.log" | sort | uniq -c | sort -rn | while read -r count note; do
+        printf "    %3d × %s\n" "$count" "$note"
+    done
+    echo ""
+    echo "  Sample alerts (first 10):"
+    zeek_cut note msg < "$ZEEK_RESULTS/notice.log" | head -10 | while IFS=$'\t' read -r note msg; do
         color="$NC"
         [[ "$msg" == *"[HIGH]"* ]] && color="$RED"
         [[ "$msg" == *"[MEDIUM]"* ]] && color="$YELLOW"
-        echo -e "  ${color}$note${NC}"
-        echo -e "    $msg"
-        echo ""
+        echo -e "    ${color}$note${NC}"
+        echo -e "      $msg"
     done
 else
     echo -e "  ${YELLOW}No notices generated${NC}"
 fi
+echo ""
 
 echo -e "${CYAN}═══════════════════════════════════════════════${NC}"
-echo -e "${GREEN}  Done.${NC}"
+echo -e "${GREEN}  Done. All Zeek analysis ran via Docker ($ZEEK_IMAGE)${NC}"
+echo -e "${CYAN}═══════════════════════════════════════════════${NC}"
 echo ""
